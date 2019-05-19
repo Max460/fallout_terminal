@@ -13,9 +13,12 @@ from subprocess import call as system_call
 
 sys.dont_write_bytecode = True
 
-version = '0.0.1'
+version = '0.0.4'
 
 term_style = 'f4' #f3 OR f4 OR f4_arc OR f4_inst
+
+debug = 1
+password = 'root'
 
 os_type = platform.system()
 os_release = platform.release() 
@@ -24,6 +27,9 @@ rows, columns = os.popen('stty size', 'r').read().split()
 
 yes = {'yes', 'y'}
 no = {'no', 'n'}
+
+server = random.randint(1, 20)
+space_f3 = (int(columns) / 2) -22
 
 mode_def = """
 n - no variants
@@ -76,110 +82,14 @@ f3_preload_3 = """
 >RUN DEBUG/ACCOUNTS.F
 """
 
-string_codes_f3 = {
-'1': '0xF4F0',
-'2': '0xF4FC',
-'3': '0xF514',
-'4': '0xF520',
-'5': '0xF52C',
-'6': '0xF538',
-'7': '0xF544',
-'8': '0xF550',
-'9': '0xF55C',
-'10': '0xF568',
-'11': '0xF574',
-'12': '0xF580',
-'13': '0xF58C',
-'14': '0xF598',
-'15': '0xF5A4',
-'16': '0xF5B0',
-'17': '0xF5BC',
-'18': '0xF5CB',
-'19': '0xF5D4',
-'20': '0xF5E0',
-'21': '0xF5EC',
-'22': '0xF5F8',
-'23': '0xF604',
-'24': '0xF610',
-'25': '0xF61C',
-'26': '0xF628',
-'27': '0xF634',
-'28': '0xF640',
-'29': '0xF64C',
-'30': '0xF658',
-'31': '0xF664',
-'32': '0xF670'
-}
+f3_wellcome = """
+{}ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
+{}	COPYRIGHT 2075-2077 ROBCO INDUSTRIES
+{}				-Server {}-
+"""
 
-string_codes_f4 = {
-'1': '0xC330',
-'2': '0xC33C',
-'3': '0xC348',
-'4': '0xC354',
-'5': '0xC360',
-'6': '0xC36C',
-'7': '0xC378',
-'8': '0xC384',
-'9': '0xC390',
-'10': '0xC39C',
-'11': '0xC3AB',
-'12': '0xC3B4',
-'13': '0xC3C0',
-'14': '0xC3CC',
-'15': '0xC3D8',
-'16': '0xC3E4',
-'17': '0xC3F0',
-'18': '0xC3FC',
-'19': '0xC408',
-'20': '0xC414',
-'21': '0xC420',
-'22': '0xC42C',
-'23': '0xC438',
-'24': '0xC444',
-'25': '0xC450',
-'26': '0xC45C',
-'27': '0xC468',
-'28': '0xC474',
-'29': '0xC480',
-'30': '0xC48C',
-'31': '0xC498',
-'32': '0xC4A4'
-}
-
-string_codes_f4_arc = {
-'1': '0x0000',
-'2': '0x000C',
-'3': '0x0010',
-'4': '0x0018',
-'5': '0x0024',
-'6': '0x0030',
-'7': '0x003C',
-'8': '0x0048',
-'9': '0x0054',
-'10': '0x0060',
-'11': '0x006C',
-'12': '0x0078',
-'13': '0x0084',
-'14': '0x0090',
-'15': '0x009C',
-'16': '0x00A8',
-'17': '0x00B4',
-'18': '0x00C0',
-'19': '0x00CC',
-'20': '0x00D8',
-'21': '0x00E4',
-'22': '0x00F0',
-'23': '0x00FC',
-'24': '0x0108',
-'25': '0x0114',
-'26': '0x0120',
-'27': '0x012C',
-'28': '0x0138',
-'29': '0x0144',
-'30': '0x0150',
-'31': '0x015C',
-'32': '0x0168'
-}
+char_1_arr = ['A', 'B', 'C', 'D', 'F', '0', '1', '2', '3', '4', '5', '6', 'A', 'B', 'C', 'D', 'F', '0', '1', '2', '3', '4', '5', '6', 'A', 'B', 'C', 'D', 'F', '0', '1', '2', '3', '4', '5', '6']
+chars = ['A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 symbols = [
 '`',
@@ -208,6 +118,59 @@ symbols = [
 '*'
 ]
 
+words4 = [
+'pack',
+'pawn',
+'pump',
+'peak',
+'wait',
+'half',
+'hour',
+'wave',
+'tent',
+'slot',
+'cast',
+'fuel',
+'last',
+'even',
+'gain',
+'east',
+'stab',
+'test',
+'seem',
+'mile',
+'lost',
+'ruin',
+'fade',
+'camp',
+'city',
+'joke',
+'bang',
+'nail',
+'hero',
+'halt',
+'sofa',
+'crew',
+'coin',
+'bait',
+'huge',
+'trip',
+'baby',
+'game',
+'film',
+'west',
+'wire',
+'hill',
+'help',
+'coup',
+'fish',
+'load',
+'tire',
+'form',
+'area',
+'swim',
+]
+
 def clear():
 	if os_type == 'Windows':
 		system_call("cls", shell=True)
@@ -226,6 +189,32 @@ def ProgressBar(bar_width, bar_upd_time):
 		sys.stdout.flush()
 
 	sys.stdout.write("\n")		
+
+
+chars_radom = []
+
+char_1_c = random.randint(1, 12)
+char_2_c = random.randint(1, 16)
+char_3_c = random.randint(1, 16)
+char_4_c = random.randint(1, 16)
+
+string_codes = []
+def string_codes_list_gen():
+	global string_codes
+	global char_2_c
+	global char_3_c
+	global char_4_c
+	a = '0x' + char_1_arr[char_1_c] + chars[char_2_c] + chars[char_3_c] + chars[char_4_c] 
+	for x in range(32):
+		a = ''
+		cnt = 1
+		a = '0x' + char_1_arr[char_1_c] + chars[char_2_c + 1] + chars[char_3_c + 1] + chars[char_4_c + 1]
+		char_2_c = char_2_c + 1
+		char_3_c = char_3_c + 1
+		char_4_c = char_4_c + 1
+		string_codes.append(a)
+
+string_codes_list_gen()
 
 
 def load():
@@ -267,65 +256,117 @@ def crack(c_mode):
 	global attempt_cnt
 	if c_mode == 'n':
 		mode = 'n'
-		attempt_cnt = 1
+		attempt_cnt = 4
+		init_attempt_cnt = 4
 		crack_interpreter_loop()
 	elif c_mode == 'p':
 		mode = 'p'
 		attempt_cnt = 1
 		crack_interpreter_loop()
 	elif c_mode == '100':
-		mode = '100'
+		mode = 100
 		attempt_cnt = 100
+		init_attempt_cnt = 100
 		crack_interpreter_loop()
 	elif c_mode == '0':
 		mode = 0
 		attempt_cnt = 1
+		init_attempt_cnt = 1
 		crack_interpreter_loop()
 	elif c_mode == '1':
 		mode = 1
 		attempt_cnt = 6
+		init_attempt_cnt = 6
 		crack_interpreter_loop()
 	elif c_mode == '2':
 		mode = 2
 		attempt_cnt = 5
+		init_attempt_cnt = 5
 		crack_interpreter_loop()
 	elif c_mode == '3':
 		mode = 3
 		attempt_cnt = 4
+		init_attempt_cnt = 4
 		crack_interpreter_loop()
 	elif c_mode == '4':
 		mode = 4
 		attempt_cnt = 4
+		init_attempt_cnt = 4
 		crack_interpreter_loop()
 	else:
 		print('[ERROR 0xE003]')
 		sys.exit()
 
-def random_sybol_gen():
+
+def random_symbol_gen(symbols_range):
 	a = ''
-	for i in range(12):
+	for i in range(symbols_range):
 		global a 
 		a += str(symbols[random.randint(0, 23)]) 
 	return a
 
+
+answer = words4[random.randint(0, 49)]
+answer_pos_v = random.randint(1, 16)    #vertical
+answer_pos_h = random.randint(1, 4)     #horizontal
+
 def string_interpreter():
-	column_1_cnt = 1
-	column_2_cnt = 17
-	for x in range(16):
-		if term_style == 'f3':
-			print(string_codes_f3['{}'.format(column_1_cnt)] + ' ' + str(random_sybol_gen()) + ' ' + string_codes_f3['{}'.format(column_2_cnt)] + ' ' + str(random_sybol_gen()) + ' ') 
-		elif term_style == 'f4':
-			print(string_codes_f4['{}'.format(column_1_cnt)] + ' ' + str(random_sybol_gen()) + ' ' + string_codes_f4['{}'.format(column_2_cnt)] + ' ' + str(random_sybol_gen()) + ' ') 
-		elif term_style == 'f4_arc':
-			print(string_codes_f4_arc['{}'.format(column_1_cnt)] + ' ' + str(random_sybol_gen()) + ' ' + string_codes_f4_arc['{}'.format(column_2_cnt)] + ' ' + str(random_sybol_gen()) + ' ') 
+	column_1_cnt = 0
+	column_2_cnt = 15
 
-		else:
-			print('[ERROR 0xE0]')
-			sys.exit()
+	if mode == 'n':
+		for x in range(16):
+			print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 		
+			column_1_cnt += 1
+			column_2_cnt += 1
+	
+	elif mode == 'p':
+		print('Password: ')
 
-		column_1_cnt += 1
-		column_2_cnt += 1
-		"""+ ' ' * 13 + string_code_2['{}'.format(x * 2)])"""
+	elif mode == 0:
+		for x in range(16):
+			if x == answer_pos_v:
+				if answer_pos_h == 1:
+					print(string_codes[column_1_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+				elif answer_pos_h == 2:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ') 
+				elif answer_pos_h == 3:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ') 
+				elif answer_pos_h == 4:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+			else:	
+				print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+
+			column_1_cnt += 1
+			column_2_cnt += 1
+
+	elif mode == 1:
+		for x in range(16):
+			random_words = random.randint(1, 5)
+			if x == answer_pos_v:
+				if answer_pos_h == 1:
+					print(string_codes[column_1_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+				elif answer_pos_h == 2:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ') 
+				elif answer_pos_h == 3:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ') 
+				elif answer_pos_h == 4:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+			else:
+				if random_words == 1:
+					print(string_codes[column_1_cnt] + ' ' + words4[random.randint(0, 49)].upper() + str(random_symbol_gen(8)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+				elif random_words == 2:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + words4[random.randint(0, 49)].upper() + str(random_symbol_gen(8)) + ' ') 
+				elif random_words == 3:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(8)) + words4[random.randint(0, 49)].upper() + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+				elif random_words == 4:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(8)) + words4[random.randint(0, 49)].upper() + ' ') 
+				elif random_words == 5:
+					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+
+			column_1_cnt += 1
+			column_2_cnt += 1
+	
 
 def attempts_interpreter():
 	if term_style == 'f3':
@@ -341,19 +382,52 @@ def attempts_interpreter():
 			attempts_sym_cnt = ('██ ' * attempt_cnt)
 			return attempts_sym_cnt
 
+history = []
+
 def crack_interpreter():
-	#print('')
-	ci_1 = raw_input('>')
+	global history
 	global attempt_cnt
-	attempt_cnt = attempt_cnt - 1
+
+	ci_1 = raw_input('>')
+
 	if ci_1 == 'exit':
 		sys.exit()
-	else:
-		print('[ERROR 0xE010]')
-		time.sleep(0.2)
+	elif mode == 'p' and ci_1 == password:
+		crack_pass()
+	elif ci_1.lower() == answer:
+		if mode == 0 or mode == 1 or mode == 2 or mode == 3 or mode == 4:
+			crack_pass() 
+		else:
+			pass
 
-	clear()
-	crack_interpreter_loop()
+	elif ci_1 == 'SET DEBUG:ATTEMPT ADD':
+		history = history + ' {}'.format(ci_1)
+		clear()
+		attempt_cnt = attempt_cnt + 1
+		crack_interpreter_loop()
+	elif ci_1 == 'SET DEBUG:ATTEMPT RESET':
+		history = history + ' {}'.format(ci_1)
+		clear()
+		attempt_cnt = attempts
+		crack_interpreter_loop()
+	else:
+		if mode == 1 and len(ci_1) == 4:
+			likeness = 0
+			if ci_1[0] == answer[0]:
+				likeness += 1
+			if ci_1[1] == answer[1]:
+				likeness += 1
+			if ci_1[2] == answer[2]:
+				likeness += 1
+			if ci_1[3] == answer[3]:
+				likeness += 1
+
+			history.append('>{} '.format(ci_1))
+			history.append('>Entry Denied')
+			history.append('>Likeness: {}'.format(likeness))
+		clear()
+		attempt_cnt = attempt_cnt - 1
+		crack_interpreter_loop()
 
 
 def crack_interpreter_loop():
@@ -362,7 +436,7 @@ def crack_interpreter_loop():
 		print('ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL')
 		print('ENTER PASWORD NOW \n')
 		print('ATTEMPT(S) LEFT: {}'.format(attempts_interpreter())) #17
-	elif term_style == 'f4' or term_style == 'f4_arc':
+	elif term_style == 'f4' or term_style == 'f4_arc' or term_style == 'f4_inst':
 		if term_style == 'f4':
 			print('Wellcome to ROBCO Industries (TM) Termlink')
 		elif term_style == 'f4_arc':
@@ -375,20 +449,77 @@ def crack_interpreter_loop():
 	string_interpreter()
 
 	#test
-	#print(''.join(symbols))
-	print('c:' + str(columns) + ' m:' + str(mode) + ' a:' + str(attempt_cnt))
+	if debug == 1:
+		print('c:' + str(columns) + ' m:' + str(mode) + ' a:' + str(attempt_cnt) + ' ' + answer + ' ' + str(answer_pos_v) + ' ' + str(answer_pos_h))
 	#visuals end
+
+
+	if (int(rows) - 21) <= len(history):
+		for x in history[:(int(rows)-22)]:
+			sys.stdout.write(x)
+			sys.stdout.write('\n')
+	
+	else:
+		for x in history:
+			sys.stdout.write(x)
+			sys.stdout.write('\n')
+
+	#print(history)
 
 	if attempt_cnt == 0:
 		print('Ininiating lockdown...')
 		time.sleep(0.65)
-		print('[Poccess Complete]')
+		print('[Poccess Completed]')
 		sys.exit()
-
+	
 	crack_interpreter()
 
 
 
 
+
+
+def crack_pass():
+	clear()
+	if term_style == 'f3':
+		print(f3_wellcome.format(space_f3, space_f3, space_f3, server))
+	elif term_style == 'f4':
+		print('Wellcome to ROBCO Industries (TM) Termlink')
+	elif term_style == 'f4_arc':
+		print('ArcJet Systems | ArcNet')
+	elif term_style == 'f4_inst':
+		print('==== Institute Central Network ====')
+
+	print('\nInitializing....')
+
+	print('\n' * (int(rows) - 5))
+	command_ = raw_input('> Password Accepted ')
+	cmd_loop('')
+
+
+def cmd():
+	print('\n' * (int(rows) - 5))
+	command_ = raw_input('>')
+	cmd_loop(command_)
+
+def cmd_loop(command):
+	if command == 'exit':
+		clear()
+		print('[Proccess Competed]')
+		sys.exit()
+	else:
+		clear()
+		if term_style == 'f3':
+			print(f3_wellcome.format(space_f3, space_f3, space_f3, server))
+		elif term_style == 'f4':
+			print('Wellcome to ROBCO Industries (TM) Termlink')
+		elif term_style == 'f4_arc':
+			print('ArcJet Systems | ArcNet')
+		elif term_style == 'f4_inst':
+			print('==== Institute Central Network ====')
+
+		print('\nInitializing....')
+
+		cmd()
 
 load()
