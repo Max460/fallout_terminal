@@ -4,8 +4,6 @@ import os
 import sys
 import time
 import random
-#import ctypes
-#import inspect
 import platform
 import datetime
 
@@ -13,12 +11,12 @@ from subprocess import call as system_call
 
 sys.dont_write_bytecode = True
 
-version = '0.0.4'
+version = '0.0.5'
 
 term_style = 'f4' #f3 OR f4 OR f4_arc OR f4_inst
 
-debug = 1
-password = 'root'
+debug = 0
+password = 'password'
 
 os_type = platform.system()
 os_release = platform.release() 
@@ -27,6 +25,8 @@ rows, columns = os.popen('stty size', 'r').read().split()
 
 yes = {'yes', 'y'}
 no = {'no', 'n'}
+
+text = []
 
 server = random.randint(1, 20)
 space_f3 = (int(columns) / 2) -22
@@ -41,22 +41,6 @@ p - verbose password
 3 - advanced
 4 - master
 """
-
-error_codes = {
-'0xE---': 'Error code lost due to data loss',
-'0xE000': 'Error',
-'0xE001': 'System error',
-'0xE002': 'Startup error',
-'0xE003': 'Load error',
-'0xE004': 'Load mode error',
-'0xE005': '',
-'0xE006': '',
-'0xE007': '',
-'0xE008': '',
-'0xE009': '',
-'0xE010': 'Unknown instruction',
-'0xE011': 'Permission error'
-}
 
 f3_preload_1 = """ 
 >SET TERMINAL/INQUIRE
@@ -253,45 +237,54 @@ attempt_cnt = 1
 
 def crack(c_mode):
 	global mode
+	global text
 	global attempt_cnt
 	if c_mode == 'n':
 		mode = 'n'
 		attempt_cnt = 4
 		init_attempt_cnt = 4
+		text = string_interpreter()
 		crack_interpreter_loop()
 	elif c_mode == 'p':
 		mode = 'p'
 		attempt_cnt = 1
+		text = string_interpreter()
 		crack_interpreter_loop()
 	elif c_mode == '100':
 		mode = 100
 		attempt_cnt = 100
 		init_attempt_cnt = 100
+		text = string_interpreter()
 		crack_interpreter_loop()
 	elif c_mode == '0':
 		mode = 0
 		attempt_cnt = 1
 		init_attempt_cnt = 1
+		text = string_interpreter()
 		crack_interpreter_loop()
 	elif c_mode == '1':
 		mode = 1
 		attempt_cnt = 6
 		init_attempt_cnt = 6
+		text = string_interpreter()
 		crack_interpreter_loop()
 	elif c_mode == '2':
 		mode = 2
 		attempt_cnt = 5
 		init_attempt_cnt = 5
+		text = string_interpreter()
 		crack_interpreter_loop()
 	elif c_mode == '3':
 		mode = 3
 		attempt_cnt = 4
 		init_attempt_cnt = 4
+		text = string_interpreter()
 		crack_interpreter_loop()
 	elif c_mode == '4':
 		mode = 4
-		attempt_cnt = 4
-		init_attempt_cnt = 4
+		attempt_cnt = 3
+		init_attempt_cnt = 3
+		text = string_interpreter()
 		crack_interpreter_loop()
 	else:
 		print('[ERROR 0xE003]')
@@ -311,31 +304,32 @@ answer_pos_v = random.randint(1, 16)    #vertical
 answer_pos_h = random.randint(1, 4)     #horizontal
 
 def string_interpreter():
+	text = []
 	column_1_cnt = 0
 	column_2_cnt = 15
 
 	if mode == 'n':
 		for x in range(16):
-			print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 		
+			text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ')
 			column_1_cnt += 1
 			column_2_cnt += 1
 	
 	elif mode == 'p':
-		print('Password: ')
+		text.uppend('Password: ')
 
 	elif mode == 0:
 		for x in range(16):
 			if x == answer_pos_v:
 				if answer_pos_h == 1:
-					print(string_codes[column_1_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
 				elif answer_pos_h == 2:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ') 
 				elif answer_pos_h == 3:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ') 
 				elif answer_pos_h == 4:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
 			else:	
-				print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+				text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
 
 			column_1_cnt += 1
 			column_2_cnt += 1
@@ -345,27 +339,29 @@ def string_interpreter():
 			random_words = random.randint(1, 5)
 			if x == answer_pos_v:
 				if answer_pos_h == 1:
-					print(string_codes[column_1_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
 				elif answer_pos_h == 2:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + answer.upper() + str(random_symbol_gen(8)) + ' ') 
 				elif answer_pos_h == 3:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ') 
 				elif answer_pos_h == 4:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(4)) + answer.upper() + str(random_symbol_gen(4)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
 			else:
 				if random_words == 1:
-					print(string_codes[column_1_cnt] + ' ' + words4[random.randint(0, 49)].upper() + str(random_symbol_gen(8)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + words4[random.randint(0, 49)].upper() + str(random_symbol_gen(8)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
 				elif random_words == 2:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + words4[random.randint(0, 49)].upper() + str(random_symbol_gen(8)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + words4[random.randint(0, 49)].upper() + str(random_symbol_gen(8)) + ' ') 
 				elif random_words == 3:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(8)) + words4[random.randint(0, 49)].upper() + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(8)) + words4[random.randint(0, 49)].upper() + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
 				elif random_words == 4:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(8)) + words4[random.randint(0, 49)].upper() + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(8)) + words4[random.randint(0, 49)].upper() + ' ') 
 				elif random_words == 5:
-					print(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
+					text.append(string_codes[column_1_cnt] + ' ' + str(random_symbol_gen(12)) + ' ' + string_codes[column_2_cnt] + ' ' + str(random_symbol_gen(12)) + ' ') 
 
 			column_1_cnt += 1
 			column_2_cnt += 1
+
+	return text
 	
 
 def attempts_interpreter():
@@ -392,21 +388,18 @@ def crack_interpreter():
 
 	if ci_1 == 'exit':
 		sys.exit()
-	elif mode == 'p' and ci_1 == password:
+	elif ci_1 == password:
 		crack_pass()
 	elif ci_1.lower() == answer:
-		if mode == 0 or mode == 1 or mode == 2 or mode == 3 or mode == 4:
-			crack_pass() 
-		else:
-			pass
+		crack_pass() 
 
-	elif ci_1 == 'SET DEBUG:ATTEMPT ADD':
-		history = history + ' {}'.format(ci_1)
+	elif (ci_1 == 'SET DEBUG:ATTEMPT ADD') or (ci_1 == 'A+'):
+		history.append(' {}'.format(ci_1))
 		clear()
 		attempt_cnt = attempt_cnt + 1
 		crack_interpreter_loop()
 	elif ci_1 == 'SET DEBUG:ATTEMPT RESET':
-		history = history + ' {}'.format(ci_1)
+		history.append(' {}'.format(ci_1))
 		clear()
 		attempt_cnt = attempts
 		crack_interpreter_loop()
@@ -446,7 +439,8 @@ def crack_interpreter_loop():
 		print('Password Required')
 		print('Attempts Remaining: {}'.format(attempts_interpreter())) #20
 
-	string_interpreter()
+	for x in text:
+		print(x)
 
 	#test
 	if debug == 1:
@@ -464,8 +458,6 @@ def crack_interpreter_loop():
 			sys.stdout.write(x)
 			sys.stdout.write('\n')
 
-	#print(history)
-
 	if attempt_cnt == 0:
 		print('Ininiating lockdown...')
 		time.sleep(0.65)
@@ -473,10 +465,6 @@ def crack_interpreter_loop():
 		sys.exit()
 	
 	crack_interpreter()
-
-
-
-
 
 
 def crack_pass():
